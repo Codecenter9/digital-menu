@@ -3,11 +3,9 @@ import { Link, usePage, router } from "@inertiajs/react";
 import {
     Menu,
     UtensilsCrossed,
-    Coffee,
     Info,
     LogOut,
     ShoppingCart,
-    Settings,
     User,
     ShoppingBag,
 } from "lucide-react";
@@ -19,14 +17,23 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from "@/components/ui/drawer";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import Dropdown from "@/Components/Dropdown";
 import { useCart } from "@/Context/CartContext";
 import CartDrawer from "../ui/Menu/Cart";
+import Profile from "../../common/Profile/Profile";
 
 const Navbar = () => {
     const { auth } = usePage().props;
     const user = auth?.user;
     const [cartOpen, setCartOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [openDialogBox, setOpenDialogBox] = useState(false);
     const { cart } = useCart();
 
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -165,10 +172,15 @@ const Navbar = () => {
                                                     My Orders
                                                 </Link>
 
-                                                <Link className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700">
+                                                <button
+                                                    onClick={() => {
+                                                        setOpenDialogBox(true);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700"
+                                                >
                                                     <User size={18} />
                                                     My Profile
-                                                </Link>
+                                                </button>
                                                 <hr className="border border-gray-700" />
 
                                                 <Link
@@ -203,7 +215,11 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                <Drawer direction="right">
+                <Drawer
+                    direction="right"
+                    open={menuOpen}
+                    onOpenChange={setMenuOpen}
+                >
                     <div className="flex items-center gap-5 md:hidden">
                         <button
                             onClick={() => setCartOpen(true)}
@@ -223,7 +239,7 @@ const Navbar = () => {
                         </button>
 
                         <DrawerTrigger asChild>
-                            <button className="">
+                            <button onClick={() => setMenuOpen(true)}>
                                 <Menu
                                     className={`h-7 w-7 ${scrolled ? "text-gray-900 hover:text-gray-700" : "text-gray-300 hover:text-gray-100"} p-0 rounded-md transition-all duration-300`}
                                 />
@@ -279,13 +295,20 @@ const Navbar = () => {
                                                         <ShoppingCart className="h-5 w-5" />
                                                         My Orders
                                                     </Link>
-                                                    <Link
-                                                        href="#"
+                                                    <button
+                                                        onClick={() => {
+                                                            setMenuOpen(false);
+                                                            setTimeout(() => {
+                                                                setOpenDialogBox(
+                                                                    true,
+                                                                );
+                                                            }, 250);
+                                                        }}
                                                         className={`w-full text-sm flex items-center gap-3 rounded-none p-2 ${currentPath === "my-profile" ? "bg-gray-200 text-gray-900" : "hover:bg-gray-200"} hover:bg-gray-200 transition-all duration-300 border-b border-gray-200 `}
                                                     >
                                                         <User className="h-5 w-5" />
                                                         My Profile
-                                                    </Link>
+                                                    </button>
                                                 </div>
                                                 <Link
                                                     onClick={handleLogout}
@@ -319,6 +342,15 @@ const Navbar = () => {
                 </Drawer>
             </div>
             <CartDrawer open={cartOpen} setOpen={setCartOpen} />
+            {/* dialog box */}
+            <Dialog open={openDialogBox} onOpenChange={setOpenDialogBox}>
+                <DialogContent className="sm:max-w-3xl">
+                    <DialogHeader>
+                        <DialogTitle>Update Profile</DialogTitle>
+                    </DialogHeader>
+                    <Profile user={user} setOpenDialogBox={setOpenDialogBox} />
+                </DialogContent>
+            </Dialog>
         </nav>
     );
 };

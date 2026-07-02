@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get("/", [HomePageController::class, "index"])->name("home");
-Route::get("/menu", [MenuController::class, "menu"])->name("menu");
-Route::get("/item-details/{itemId}", [MenuController::class, "itemDetails"])->name("item.details");
+Route::get("/menu", [MenuController::class, "menu"])->middleware(['auth'])->name("menu");
+Route::get("/item-details/{itemId}", [MenuController::class, "itemDetails"])->middleware(['auth'])->name("item.details");
 Route::get("/check-out", [MenuController::class, "checkOut"])->middleware(['auth'])->name("checkout");
 Route::post("/orders/store", [MenuController::class, "storeOrders"])->middleware(['auth'])->name("orders.store");
 Route::get("/my-orders/{userId}", [MenuController::class, "myOrders"])->middleware(['auth'])->name("myorders");

@@ -1,7 +1,6 @@
 import { Button } from "@/Components/ui/button";
 import { useCart } from "@/Context/CartContext";
 import { Badge } from "@/components/ui/badge";
-import Styles from "@/constants/Styles";
 import { ShoppingCart } from "lucide-react";
 import {
     Card,

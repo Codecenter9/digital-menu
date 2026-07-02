@@ -1,14 +1,18 @@
 import { Button } from "@/Components/ui/button";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useMemo, useRef, useState } from "react";
 import MenuGrid from "./Menu/MenuGrid";
 
 const BrowseMenu = ({ meals, drinks, categories }) => {
-     const [activeTab, setActiveTab] = useState("all");
+    const [activeTab, setActiveTab] = useState("all");
     const [subActiveTab, setSubActiveTab] = useState(null);
     const scrollRef = useRef(null);
 
+    const { auth } = usePage().props;
+    const user = auth?.user;
+
+    console.log(user);
     const filteredItems = useMemo(() => {
         // Show everything
         if (activeTab === "all") {
@@ -164,7 +168,7 @@ const BrowseMenu = ({ meals, drinks, categories }) => {
                     {activeTab === "all" && (
                         <div className="hidden lg:flex">
                             <Link
-                                href="#"
+                                href={route("myorders", user?.id)}
                                 className="text-sm text-blue-500 underline hover:text-amber-500 transition-all duration-300"
                             >
                                 Browse Orders...
