@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
-const Preloader = () => {
+const Preloader = ({ children }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
