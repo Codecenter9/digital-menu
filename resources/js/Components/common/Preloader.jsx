@@ -1,38 +1,35 @@
 import { useEffect, useState } from "react";
-import { router } from "@inertiajs/react";
+
 const Preloader = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        router.on("start", () => setLoading(true));
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 500);
 
-        router.on("finish", () => {
-            setTimeout(() => setLoading(false), 300);
-        });
+        return () => clearTimeout(timer);
     }, []);
-    return (
-        <>
-            {loading && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900">
-                    <div className="relative w-24 h-24">
-                        {/* Amber */}
-                        <div className="absolute inset-0 animate-cross-clockwise">
-                            <div className="absolute left-1/2 top-1/2 h-20 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500"></div>
-                            <div className="absolute left-1/2 top-1/2 h-2 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500"></div>
-                        </div>
 
-                        {/* Blue */}
-                        <div className="absolute inset-0 rotate-45 animate-cross-counter">
-                            <div className="absolute left-1/2 top-1/2 h-20 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500"></div>
-                            <div className="absolute left-1/2 top-1/2 h-2 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500"></div>
-                        </div>
-                    </div>
+    if (loading) {
+        return (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900">
+                <div className="relative h-16 w-16">
+                    <div className="absolute inset-0 rounded-full border-[5px] border-blue-500 border-r-transparent border-b-transparent animate-spin" />
+
+                    <div
+                        className="absolute inset-1 rounded-full border-[5px] border-amber-500 border-l-transparent border-t-transparent animate-spin"
+                        style={{
+                            animationDirection: "reverse",
+                            animationDuration: "0.9s",
+                        }}
+                    />
                 </div>
-            )}
+            </div>
+        );
+    }
 
-            {children}
-        </>
-    );
+    return children;
 };
 
 export default Preloader;
