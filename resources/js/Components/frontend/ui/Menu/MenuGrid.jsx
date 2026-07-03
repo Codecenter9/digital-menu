@@ -24,17 +24,9 @@ const MenuGrid = ({ items = [] }) => {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            {items.map((item, index) => (
-                <div
-                    key={item.id}
-                    data-aos="fade-up"
-                    data-aos-duration={500 + index * 200}
-                    data-aos-delay="100"
-                    data-aos-offset="100"
-                    data-aos-easing="ease-in-out"
-                    className="p-1"
-                >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 lg:gap-3 gap-y-3">
+            {items.map((item) => (
+                <div key={item.id} className="p-1">
                     <Card className="group border-none rounded-md relative mx-auto w-full max-w-md space-y-5 p-2">
                         <div className="relative overflow-hidden w-full rounded-md">
                             <img
@@ -43,7 +35,7 @@ const MenuGrid = ({ items = [] }) => {
                                     "/staticFiles/placeholder.webp"
                                 }
                                 alt={item.menu_item}
-                                className="object-cover cursor-pointer h-[250px] lg:h-[150px] w-full group-hover:scale-105 transition-all duration-300"
+                                className="object-cover cursor-pointer h-[150px] w-full group-hover:scale-105 transition-all duration-300"
                             />
 
                             <div className="absolute top-2 right-2">

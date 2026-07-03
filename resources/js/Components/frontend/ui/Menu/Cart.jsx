@@ -37,6 +37,8 @@ const CartDrawer = ({ open, setOpen }) => {
         0,
     );
 
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
     return (
         <>
             <Drawer open={open} onOpenChange={setOpen}>
@@ -56,12 +58,14 @@ const CartDrawer = ({ open, setOpen }) => {
                                 Cart Items
                             </DrawerTitle>
 
-                            <button
-                                className="text-red-700 text-sm font-medium underline hover:text-red-600 transition"
-                                onClick={() => clearCart()}
-                            >
-                                Clear Cart
-                            </button>
+                            {cartCount > 0 && (
+                                <button
+                                    className="text-red-700 text-sm font-medium underline hover:text-red-600 transition"
+                                    onClick={() => clearCart()}
+                                >
+                                    Clear Cart
+                                </button>
+                            )}
                         </div>
                     </DrawerHeader>
 
